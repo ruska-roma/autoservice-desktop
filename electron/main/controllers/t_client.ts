@@ -165,7 +165,7 @@ export function initClientController(database) {
   ipcMain.handle('client:search', (_, { field, query, limit, offset }) => {
     const isExact = clientExactMatchFields.has(field);
     const stmt = database.prepare(
-      `SELECT * FROM ${table} WHERE ${field} ${isExact ? '= ?' : 'LIKE ?'} ORDER BY ${primaryKey} DESC LIMIT ? OFFSET ?`,
+      `SELECT * FROM ${table} WHERE ${isExact ? `${field} = ?` : `normalize(${field}) LIKE normalize(?)`} ORDER BY ${primaryKey} DESC LIMIT ? OFFSET ?`,
     );
     const value = isExact ? query : `%${query}%`;
     return stmt.all(value, limit, offset);
@@ -174,7 +174,7 @@ export function initClientController(database) {
   ipcMain.handle('client:search-count', (_, { field, query }) => {
     const isExact = clientExactMatchFields.has(field);
     const stmt = database.prepare(
-      `SELECT COUNT(*) as count FROM ${table} WHERE ${field} ${isExact ? '= ?' : 'LIKE ?'}`,
+      `SELECT COUNT(*) as count FROM ${table} WHERE ${isExact ? `${field} = ?` : `normalize(${field}) LIKE normalize(?)`}`,
     );
     const value = isExact ? query : `%${query}%`;
     return stmt.get(value).count;

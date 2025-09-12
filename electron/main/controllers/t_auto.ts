@@ -169,7 +169,7 @@ export function initAutoController(database) {
        FROM ${table} a
        JOIN ${TableEnum.Client} c
          ON c.${primaryKeys[TableEnum.Client]} = a.${primaryKeys[TableEnum.Client]}
-       WHERE a.${field} ${isExact ? '= ?' : 'LIKE ?'}
+         WHERE ${isExact ? `a.${field} = ?` : `normalize(a.${field}) LIKE normalize(?)`}
        ORDER BY a.${primaryKey} DESC
        LIMIT ? OFFSET ?`,
     );
@@ -189,7 +189,9 @@ export function initAutoController(database) {
   ipcMain.handle('auto:search-count', (_, { field, query }) => {
     const isExact = autoExactMatchFields.has(field);
     const stmt = database.prepare(
-      `SELECT COUNT(*) as count FROM ${table} WHERE ${field} ${isExact ? '= ?' : 'LIKE ?'}`,
+      `SELECT COUNT(*) as count 
+       FROM ${table} 
+       WHERE ${isExact ? `${field} = ?` : `normalize(${field}) LIKE normalize(?)`}`,
     );
     const value = isExact ? query : `%${query}%`;
     return stmt.get(value).count;
