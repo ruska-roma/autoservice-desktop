@@ -1,7 +1,7 @@
 {
-  "name": "auto-service",
+  "name": "autoservice-desktop",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.0",
   "type": "module",
   "main": "./out/main/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "preview": "vite preview"
   },
   "author": {
-    "name": "KCreator"
+    "name": "ruska-roma"
   },
   "build": {
     "appId": "com.example.autoservice",
