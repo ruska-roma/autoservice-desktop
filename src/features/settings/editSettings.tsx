@@ -9,41 +9,41 @@ import {
   type StackProps,
   Text,
 } from '@chakra-ui/react';
-import { SHA256 } from 'crypto-js';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
 
 import { getSettingsDetails, type SettingsType, updateSettings } from '@/entities';
 import { SubmitButton } from '@/features';
-import { PASSWORD_LENGHT, SCREENS } from '@/shared/config';
-import { useAuth } from '@/shared/context';
+import { toaster } from '@/shared/ui';
 
-interface ISecurityWidgetProps {
+interface IEditSettingsProps {
   containerProps?: StackProps;
 }
 
-export function SecurityWidget({ containerProps }: ISecurityWidgetProps) {
+export function EditSettings({ containerProps }: IEditSettingsProps) {
   const [value, setValue] = useState('');
-  const [initialValue, setInitialValue] = useState<string | null>(null);
+  const [initialValue, setInitialValue] = useState<number | null>(null);
   const [isInvalid, setIsInvalid] = useState(false);
-
-  const navigate = useNavigate();
-  const { setIsAuth } = useAuth();
 
   useEffect(() => {
     getSettingsDetails().then((settings: SettingsType | null) => {
       if (settings) {
-        setInitialValue(settings.pass_hash);
+        setInitialValue(settings.standard_hour);
+        setValue(String(settings.standard_hour));
       }
     });
   }, []);
 
   const validateFormValue = (val: string): boolean => {
-    if (val.length !== PASSWORD_LENGHT || !/^\d+$/.test(val)) {
+    if (val.trim() === '') {
       return false;
     }
-    const resolvedValue = SHA256(val).toString();
-    return resolvedValue !== initialValue;
+    const resolved = Number(val);
+    return Number.isFinite(resolved) && resolved > 0;
+  };
+
+  const handleReset = () => {
+    setValue(initialValue !== null ? String(initialValue) : '');
+    setIsInvalid(false);
   };
 
   const handleSave = async () => {
@@ -52,27 +52,24 @@ export function SecurityWidget({ containerProps }: ISecurityWidgetProps) {
       return;
     }
 
-    const resolvedValue = SHA256(value.trim()).toString();
-    const result = await updateSettings({ pass_hash: resolvedValue });
+    const resolvedValue = Number(value.trim());
+    const result = await updateSettings({ standard_hour: resolvedValue });
     if (result) {
-      setIsAuth(false);
-      navigate(SCREENS.Login);
+      setInitialValue(resolvedValue);
+      setValue(String(resolvedValue));
+      setIsInvalid(false);
+
+      toaster.create({
+        type: 'success',
+        closable: true,
+        duration: 2000,
+        title: 'Данные показателей успешно обновлены',
+      });
     }
   };
 
-  const handleReset = () => {
-    setValue('');
-    setIsInvalid(false);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const onlyDigitsValue = e.target.value.replace(/\D/g, '').slice(0, PASSWORD_LENGHT);
-    setValue(onlyDigitsValue);
-    setIsInvalid(!validateFormValue(onlyDigitsValue));
-  };
-
   const isFormValid = validateFormValue(value);
-  const isChanged = value.length > 0;
+  const isChanged = initialValue !== null && String(initialValue) !== value;
 
   return (
     <Stack
@@ -92,22 +89,26 @@ export function SecurityWidget({ containerProps }: ISecurityWidgetProps) {
         borderBottomWidth="1px"
       >
         <Text textStyle="xl" fontWeight="medium">
-          Безопасность
+          Расчётные показатели
         </Text>
       </Flex>
       <Grid px={5} py={4} gap={4} templateColumns="repeat(2, 1fr)">
         <GridItem colSpan={2}>
           <Field.Root required invalid={isInvalid}>
             <Field.Label>
-              Новый пароль <Field.RequiredIndicator />
+              Нормо-час, ₽ <Field.RequiredIndicator />
             </Field.Label>
             <Input
-              type="password"
+              type="text"
               outline="none"
-              placeholder="*****"
               value={value}
-              onChange={handleChange}
-              maxLength={PASSWORD_LENGHT}
+              maxLength={10}
+              onChange={(e) => {
+                const onlyDigitsValue = e.target.value.replace(/[^0-9.]/g, '').slice(0, 10);
+                setValue(onlyDigitsValue);
+                setIsInvalid(!validateFormValue(onlyDigitsValue));
+              }}
+              placeholder="Введите сумму"
             />
           </Field.Root>
         </GridItem>

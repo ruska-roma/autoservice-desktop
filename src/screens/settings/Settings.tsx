@@ -2,14 +2,14 @@ import { lazy, Suspense } from 'react';
 
 import { Container, Preloader } from '@/shared/ui';
 
-const CompanyWidget = lazy(() =>
-  import('./widgets/CompanyWidget').then((module) => ({ default: module.CompanyWidget })),
+const EditCompany = lazy(() =>
+  import('@/features').then((module) => ({ default: module.EditCompany })),
 );
-const SettingsWidget = lazy(() =>
-  import('./widgets/SettingsWidget').then((module) => ({ default: module.SettingsWidget })),
+const EditSettings = lazy(() =>
+  import('@/features').then((module) => ({ default: module.EditSettings })),
 );
-const SecurityWidget = lazy(() =>
-  import('./widgets/SecurityWidget').then((module) => ({ default: module.SecurityWidget })),
+const EditSecurity = lazy(() =>
+  import('@/features').then((module) => ({ default: module.EditSecurity })),
 );
 const MasterList = lazy(() =>
   import('@/features').then((module) => ({ default: module.MasterList })),
@@ -19,10 +19,10 @@ export function Settings() {
   return (
     <Container>
       <Suspense fallback={<Preloader />}>
-        <CompanyWidget containerProps={{ mb: 5 }} />
-        <SettingsWidget containerProps={{ mb: 5 }} />
+        <EditCompany containerProps={{ mb: 5 }} />
+        <EditSettings containerProps={{ mb: 5 }} />
         <MasterList containerProps={{ mb: 5 }} />
-        <SecurityWidget />
+        <EditSecurity />
       </Suspense>
     </Container>
   );

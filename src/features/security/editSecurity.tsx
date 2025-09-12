@@ -9,41 +9,41 @@ import {
   type StackProps,
   Text,
 } from '@chakra-ui/react';
+import { SHA256 } from 'crypto-js';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import { getSettingsDetails, type SettingsType, updateSettings } from '@/entities';
 import { SubmitButton } from '@/features';
-import { toaster } from '@/shared/ui';
+import { PASSWORD_LENGHT, SCREENS } from '@/shared/config';
+import { useAuth } from '@/shared/context';
 
-interface ISettingsWidgetProps {
+interface IEditSecurityProps {
   containerProps?: StackProps;
 }
 
-export function SettingsWidget({ containerProps }: ISettingsWidgetProps) {
+export function EditSecurity({ containerProps }: IEditSecurityProps) {
   const [value, setValue] = useState('');
-  const [initialValue, setInitialValue] = useState<number | null>(null);
+  const [initialValue, setInitialValue] = useState<string | null>(null);
   const [isInvalid, setIsInvalid] = useState(false);
+
+  const navigate = useNavigate();
+  const { setIsAuth } = useAuth();
 
   useEffect(() => {
     getSettingsDetails().then((settings: SettingsType | null) => {
       if (settings) {
-        setInitialValue(settings.standard_hour);
-        setValue(String(settings.standard_hour));
+        setInitialValue(settings.pass_hash);
       }
     });
   }, []);
 
   const validateFormValue = (val: string): boolean => {
-    if (val.trim() === '') {
+    if (val.length !== PASSWORD_LENGHT || !/^\d+$/.test(val)) {
       return false;
     }
-    const resolved = Number(val);
-    return Number.isFinite(resolved) && resolved > 0;
-  };
-
-  const handleReset = () => {
-    setValue(initialValue !== null ? String(initialValue) : '');
-    setIsInvalid(false);
+    const resolvedValue = SHA256(val).toString();
+    return resolvedValue !== initialValue;
   };
 
   const handleSave = async () => {
@@ -52,24 +52,27 @@ export function SettingsWidget({ containerProps }: ISettingsWidgetProps) {
       return;
     }
 
-    const resolvedValue = Number(value.trim());
-    const result = await updateSettings({ standard_hour: resolvedValue });
+    const resolvedValue = SHA256(value.trim()).toString();
+    const result = await updateSettings({ pass_hash: resolvedValue });
     if (result) {
-      setInitialValue(resolvedValue);
-      setValue(String(resolvedValue));
-      setIsInvalid(false);
-
-      toaster.create({
-        type: 'success',
-        closable: true,
-        duration: 2000,
-        title: 'Данные показателей успешно обновлены',
-      });
+      setIsAuth(false);
+      navigate(SCREENS.Login);
     }
   };
 
+  const handleReset = () => {
+    setValue('');
+    setIsInvalid(false);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onlyDigitsValue = e.target.value.replace(/\D/g, '').slice(0, PASSWORD_LENGHT);
+    setValue(onlyDigitsValue);
+    setIsInvalid(!validateFormValue(onlyDigitsValue));
+  };
+
   const isFormValid = validateFormValue(value);
-  const isChanged = initialValue !== null && String(initialValue) !== value;
+  const isChanged = value.length > 0;
 
   return (
     <Stack
@@ -89,26 +92,22 @@ export function SettingsWidget({ containerProps }: ISettingsWidgetProps) {
         borderBottomWidth="1px"
       >
         <Text textStyle="xl" fontWeight="medium">
-          Расчётные показатели
+          Безопасность
         </Text>
       </Flex>
       <Grid px={5} py={4} gap={4} templateColumns="repeat(2, 1fr)">
         <GridItem colSpan={2}>
           <Field.Root required invalid={isInvalid}>
             <Field.Label>
-              Нормо-час, ₽ <Field.RequiredIndicator />
+              Новый пароль <Field.RequiredIndicator />
             </Field.Label>
             <Input
-              type="text"
+              type="password"
               outline="none"
+              placeholder="*****"
               value={value}
-              maxLength={10}
-              onChange={(e) => {
-                const onlyDigitsValue = e.target.value.replace(/[^0-9.]/g, '').slice(0, 10);
-                setValue(onlyDigitsValue);
-                setIsInvalid(!validateFormValue(onlyDigitsValue));
-              }}
-              placeholder="Введите сумму"
+              onChange={handleChange}
+              maxLength={PASSWORD_LENGHT}
             />
           </Field.Root>
         </GridItem>

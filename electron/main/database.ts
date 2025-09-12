@@ -31,6 +31,15 @@ function resolveDatabasePath() {
 export function initDatabase() {
   const databasePath = resolveDatabasePath();
   const database = new Database(databasePath);
+
   database.exec(`PRAGMA foreign_keys = ON;`);
+
+  database.function('normalize', (input: unknown) => {
+    if (typeof input !== 'string') {
+      return input;
+    }
+    return input.toLocaleLowerCase('ru-RU');
+  });
+
   return database;
 }

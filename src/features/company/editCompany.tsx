@@ -23,11 +23,11 @@ import { toaster } from '@/shared/ui';
 
 type FormData = Record<keyof CompanyType, string>;
 
-interface ICompanyWidgetProps {
+interface IEditCompanyProps {
   containerProps?: StackProps;
 }
 
-export function CompanyWidget({ containerProps }: ICompanyWidgetProps) {
+export function EditCompany({ containerProps }: IEditCompanyProps) {
   const [formData, setFormData] = useState<FormData | null>(null);
   const [initialData, setInitialData] = useState<FormData | null>(null);
   const [invalidFields, setInvalidFields] = useState<Set<string>>(new Set());
