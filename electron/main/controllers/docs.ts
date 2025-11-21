@@ -254,21 +254,6 @@ export function initDocsController(database) {
               children: [
                 new docx.Paragraph({
                   children: [
-                    new docx.TextRun({ text: 'Адрес: ', italics: true }),
-                    new docx.TextRun({ text: clientData?.address ?? '' }),
-                  ],
-                  alignment: docx.AlignmentType.LEFT,
-                }),
-              ],
-            }),
-          ],
-        }),
-        new docx.TableRow({
-          children: [
-            new docx.TableCell({
-              children: [
-                new docx.Paragraph({
-                  children: [
                     new docx.TextRun({ text: 'Телефон: ', italics: true }),
                     new docx.TextRun({ text: clientData?.phone ?? '' }),
                   ],
@@ -283,7 +268,10 @@ export function initDocsController(database) {
             new docx.TableCell({
               children: [
                 new docx.Paragraph({
-                  children: [new docx.TextRun({ text: 'Плательщик:', italics: true })],
+                  children: [
+                    new docx.TextRun({ text: 'Адрес: ', italics: true }),
+                    new docx.TextRun({ text: clientData?.address ?? '' }),
+                  ],
                   alignment: docx.AlignmentType.LEFT,
                 }),
               ],
@@ -292,78 +280,16 @@ export function initDocsController(database) {
         }),
       ],
     });
-    const adminTable = new docx.Table({
-      layout: docx.TableLayoutType.FIXED,
-      width: { size: 100, type: docx.WidthType.PERCENTAGE },
-      columnWidths: [5000],
-      rows: [
-        new docx.TableRow({
-          children: [
-            new docx.TableCell({
-              children: [
-                new docx.Paragraph({
-                  children: [new docx.TextRun({ text: 'Заказ принял:', italics: true })],
-                  alignment: docx.AlignmentType.LEFT,
-                }),
-              ],
-            }),
-          ],
-        }),
-        new docx.TableRow({
-          children: [
-            new docx.TableCell({
-              children: [
-                new docx.Paragraph({
-                  children: [new docx.TextRun({ text: 'Расчёт:', italics: true })],
-                  alignment: docx.AlignmentType.LEFT,
-                }),
-              ],
-            }),
-          ],
-        }),
-        new docx.TableRow({
-          children: [
-            new docx.TableCell({
-              children: [
-                new docx.Paragraph({
-                  children: [new docx.TextRun({ text: 'Дата закрытия:', italics: true })],
-                  alignment: docx.AlignmentType.LEFT,
-                }),
-              ],
-            }),
-          ],
-        }),
-        new docx.TableRow({
-          children: [
-            new docx.TableCell({
-              children: [
-                new docx.Paragraph({
-                  children: [new docx.TextRun({ text: 'Заказ закрыл:', italics: true })],
-                  alignment: docx.AlignmentType.LEFT,
-                }),
-              ],
-            }),
-          ],
-        }),
-      ],
-    });
-    const clientAdminWrapperTable = new docx.Table({
+    const clientWrapperTable = new docx.Table({
       layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
       margins: { bottom: 283 },
       borders: docx.TableBorders.NONE,
-      columnWidths: [4500, 4500],
       rows: [
         new docx.TableRow({
           children: [
             new docx.TableCell({
-              width: { size: 4500, type: docx.WidthType.DXA },
-              margins: { right: 283 },
               children: [clientTable],
-            }),
-            new docx.TableCell({
-              width: { size: 4500, type: docx.WidthType.DXA },
-              children: [adminTable],
             }),
           ],
         }),
@@ -410,65 +336,10 @@ export function initDocsController(database) {
             new docx.TableCell({
               children: [
                 new docx.Paragraph({
-                  children: [new docx.TextRun({ text: 'Кузов №:', italics: true })],
-                  alignment: docx.AlignmentType.LEFT,
-                }),
-              ],
-            }),
-          ],
-        }),
-        new docx.TableRow({
-          children: [
-            new docx.TableCell({
-              children: [
-                new docx.Paragraph({
-                  children: [new docx.TextRun({ text: 'Двигатель №:', italics: true })],
-                  alignment: docx.AlignmentType.LEFT,
-                }),
-              ],
-            }),
-          ],
-        }),
-        new docx.TableRow({
-          children: [
-            new docx.TableCell({
-              children: [
-                new docx.Paragraph({
-                  children: [new docx.TextRun({ text: 'Тип кузова:', italics: true })],
-                  alignment: docx.AlignmentType.LEFT,
-                }),
-              ],
-            }),
-          ],
-        }),
-      ],
-    });
-    const autoTableSecondary = new docx.Table({
-      layout: docx.TableLayoutType.FIXED,
-      width: { size: 100, type: docx.WidthType.PERCENTAGE },
-      columnWidths: [5000],
-      rows: [
-        new docx.TableRow({
-          children: [
-            new docx.TableCell({
-              children: [
-                new docx.Paragraph({
                   children: [
                     new docx.TextRun({ text: 'Гос номер: ', italics: true }),
                     new docx.TextRun({ text: autoData?.plate_number ?? '' }),
                   ],
-                  alignment: docx.AlignmentType.LEFT,
-                }),
-              ],
-            }),
-          ],
-        }),
-        new docx.TableRow({
-          children: [
-            new docx.TableCell({
-              children: [
-                new docx.Paragraph({
-                  children: [new docx.TextRun({ text: 'Техпаспорт:', italics: true })],
                   alignment: docx.AlignmentType.LEFT,
                 }),
               ],
@@ -499,18 +370,6 @@ export function initDocsController(database) {
             }),
           ],
         }),
-        new docx.TableRow({
-          children: [
-            new docx.TableCell({
-              children: [
-                new docx.Paragraph({
-                  children: [new docx.TextRun({ text: 'Цвет:', italics: true })],
-                  alignment: docx.AlignmentType.LEFT,
-                }),
-              ],
-            }),
-          ],
-        }),
       ],
     });
     const autoWrapperTable = new docx.Table({
@@ -523,13 +382,7 @@ export function initDocsController(database) {
         new docx.TableRow({
           children: [
             new docx.TableCell({
-              width: { size: 4500, type: docx.WidthType.DXA },
-              margins: { right: 283 },
               children: [autoTableMain],
-            }),
-            new docx.TableCell({
-              width: { size: 4500, type: docx.WidthType.DXA },
-              children: [autoTableSecondary],
             }),
           ],
         }),
@@ -609,14 +462,6 @@ export function initDocsController(database) {
           children: [
             new docx.Paragraph({
               alignment: docx.AlignmentType.CENTER,
-              children: [new docx.TextRun({ text: 'Код', bold: true })],
-            }),
-          ],
-        }),
-        new docx.TableCell({
-          children: [
-            new docx.Paragraph({
-              alignment: docx.AlignmentType.CENTER,
               children: [new docx.TextRun({ text: 'Наименование работ, услуг', bold: true })],
             }),
           ],
@@ -674,14 +519,6 @@ export function initDocsController(database) {
           new docx.TableCell({
             children: [
               new docx.Paragraph({
-                alignment: docx.AlignmentType.CENTER,
-                text: String(work?.id_work) ?? '',
-              }),
-            ],
-          }),
-          new docx.TableCell({
-            children: [
-              new docx.Paragraph({
                 alignment: docx.AlignmentType.LEFT,
                 text: work?.description ?? '',
               }),
@@ -733,7 +570,7 @@ export function initDocsController(database) {
     const worksTable = new docx.Table({
       layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
-      columnWidths: [500, 1000, 4000, 750, 750, 1000, 1000, 1000],
+      columnWidths: [500, 5000, 750, 750, 1000, 1000, 1000],
       rows: [worksTableHeader, ...worksTableContent],
     });
     const worksTotal = new docx.Paragraph({
@@ -773,14 +610,6 @@ export function initDocsController(database) {
             new docx.Paragraph({
               alignment: docx.AlignmentType.CENTER,
               children: [new docx.TextRun({ text: '№', bold: true })],
-            }),
-          ],
-        }),
-        new docx.TableCell({
-          children: [
-            new docx.Paragraph({
-              alignment: docx.AlignmentType.CENTER,
-              children: [new docx.TextRun({ text: 'Код', bold: true })],
             }),
           ],
         }),
@@ -845,14 +674,6 @@ export function initDocsController(database) {
           new docx.TableCell({
             children: [
               new docx.Paragraph({
-                alignment: docx.AlignmentType.CENTER,
-                text: String(part?.id_part) ?? '',
-              }),
-            ],
-          }),
-          new docx.TableCell({
-            children: [
-              new docx.Paragraph({
                 alignment: docx.AlignmentType.LEFT,
                 text: part?.description ?? '',
               }),
@@ -904,7 +725,7 @@ export function initDocsController(database) {
     const partsTable = new docx.Table({
       layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
-      columnWidths: [500, 1000, 4000, 750, 750, 1000, 1000, 1000],
+      columnWidths: [500, 5000, 750, 750, 1000, 1000, 1000],
       rows: [partsTableHeader, ...partsTableContent],
     });
     const partsTotal = new docx.Paragraph({
@@ -1035,7 +856,7 @@ export function initDocsController(database) {
     const documentChildren: (docx.Paragraph | docx.Table)[] = [
       headerTable,
       title,
-      clientAdminWrapperTable,
+      clientWrapperTable,
       autoWrapperTable,
       reasonWrapper,
       worksTitle,
