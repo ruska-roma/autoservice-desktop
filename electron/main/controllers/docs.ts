@@ -189,7 +189,6 @@ export function initDocsController(database) {
 
     // Generate doc layout
     const headerTable = new docx.Table({
-      layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
       borders: docx.TableBorders.NONE,
       columnWidths: [5000, 5000],
@@ -229,7 +228,6 @@ export function initDocsController(database) {
     });
 
     const clientTable = new docx.Table({
-      layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
       columnWidths: [5000],
       rows: [
@@ -281,7 +279,6 @@ export function initDocsController(database) {
       ],
     });
     const clientWrapperTable = new docx.Table({
-      layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
       margins: { bottom: 283 },
       borders: docx.TableBorders.NONE,
@@ -297,7 +294,6 @@ export function initDocsController(database) {
     });
 
     const autoTableMain = new docx.Table({
-      layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
       columnWidths: [5000],
       rows: [
@@ -373,11 +369,9 @@ export function initDocsController(database) {
       ],
     });
     const autoWrapperTable = new docx.Table({
-      layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
       margins: { bottom: 283 },
       borders: docx.TableBorders.NONE,
-      columnWidths: [4500, 4500],
       rows: [
         new docx.TableRow({
           children: [
@@ -420,7 +414,6 @@ export function initDocsController(database) {
       ],
     });
     const reasonWrapper = new docx.Table({
-      layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
       borders: docx.TableBorders.NONE,
       margins: { bottom: 283 },
@@ -568,7 +561,6 @@ export function initDocsController(database) {
       });
     });
     const worksTable = new docx.Table({
-      layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
       columnWidths: [500, 5000, 750, 750, 1000, 1000, 1000],
       rows: [worksTableHeader, ...worksTableContent],
@@ -723,7 +715,6 @@ export function initDocsController(database) {
       });
     });
     const partsTable = new docx.Table({
-      layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
       columnWidths: [500, 5000, 750, 750, 1000, 1000, 1000],
       rows: [partsTableHeader, ...partsTableContent],
@@ -783,7 +774,6 @@ export function initDocsController(database) {
       ],
     });
     const footerWrapper = new docx.Table({
-      layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
       borders: docx.TableBorders.NONE,
       margins: { bottom: 283 },
@@ -804,7 +794,6 @@ export function initDocsController(database) {
       children: [new docx.TextRun({ text: 'От заказчика:', bold: true })],
     });
     const signTable = new docx.Table({
-      layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
       borders: docx.TableBorders.NONE,
       columnWidths: [5000, 5000],
@@ -835,10 +824,8 @@ export function initDocsController(database) {
       children: [clientLabel, underlineRow, signTable],
     });
     const footerTable = new docx.Table({
-      layout: docx.TableLayoutType.FIXED,
       width: { size: 100, type: docx.WidthType.PERCENTAGE },
       borders: docx.TableBorders.NONE,
-      columnWidths: [5000, 5000],
       rows: [
         new docx.TableRow({
           children: [
