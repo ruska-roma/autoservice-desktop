@@ -1,6 +1,6 @@
 import { Button, Flex, Stack, type StackProps, Text } from '@chakra-ui/react';
 
-import type { AccountDetailsType } from '@/entities';
+import { type AccountDetailsType, getDocsOrder } from '@/entities';
 import { formatCurrency } from '@/shared/lib';
 
 interface IAccountTotalsProps {
@@ -13,9 +13,14 @@ interface IAccountTotalsProps {
 }
 
 export const AccountTotals = ({ data, totalCosts, containerProps }: IAccountTotalsProps) => {
+  const { id_account } = data;
   const { totalWorksCost, totalPartsCost } = totalCosts;
 
   const totalAccountCost = totalWorksCost + totalPartsCost;
+
+  const handleGenerateOrderClick = async () => {
+    await getDocsOrder(id_account);
+  };
 
   return (
     <Stack
@@ -43,7 +48,13 @@ export const AccountTotals = ({ data, totalCosts, containerProps }: IAccountTota
             Готовый документ будет сохранён в выбранной вами папке — система откроет окно выбора
             автоматически.
           </Text>
-          <Button w="fit" size="md" rounded="lg" colorPalette="blue" disabled>
+          <Button
+            w="fit"
+            size="md"
+            rounded="lg"
+            colorPalette="blue"
+            onClick={handleGenerateOrderClick}
+          >
             Сформировать "Заказ-наряд"
           </Button>
         </Flex>

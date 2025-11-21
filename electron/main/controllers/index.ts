@@ -1,3 +1,4 @@
+export * from './docs';
 export * from './t_account';
 export * from './t_auto';
 export * from './t_client';

@@ -6,6 +6,7 @@ import {
   initAutoController,
   initClientController,
   initCompanyController,
+  initDocsController,
   initMasterController,
   initPartController,
   initSettingsController,
@@ -58,6 +59,7 @@ app.whenReady().then(() => {
   initPartController(database);
   initMasterController(database);
   initCompanyController(database);
+  initDocsController(database);
 
   createWindow();
 });

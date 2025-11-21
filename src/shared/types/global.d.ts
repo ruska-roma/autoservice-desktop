@@ -76,6 +76,9 @@ declare global {
       // Settings
       settingsDetails(): Promise<SettingsType | null>;
       settingsUpdate(data: Record<string, any>): Promise<{ success: true }>;
+
+      // Docs
+      docsOrder(accountId: number);
     };
   }
 }

@@ -2,6 +2,7 @@ export * from './account';
 export * from './auto';
 export * from './client';
 export * from './company';
+export * from './docs';
 export * from './master';
 export * from './part';
 export * from './settings';

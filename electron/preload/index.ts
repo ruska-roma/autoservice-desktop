@@ -139,4 +139,9 @@ contextBridge.exposeInMainWorld('api', {
   settingsUpdate: (data: Record<string, any>) => {
     return ipcRenderer.invoke('settings:update', data);
   },
+
+  // Docs
+  docsOrder: (accountId: number) => {
+    return ipcRenderer.invoke('docs:order', accountId);
+  },
 });
