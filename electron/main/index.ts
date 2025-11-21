@@ -32,10 +32,10 @@ function createWindow() {
   });
 
   // PROD
-  // window.loadFile(path.resolve(__dirname, '../renderer/index.html'));
+  window.loadFile(path.resolve(__dirname, '../renderer/index.html'));
 
   // DEV
-  window.loadURL('http://localhost:5173');
+  // window.loadURL('http://localhost:5173');
 
   window.on('closed', () => (window = null));
 }
