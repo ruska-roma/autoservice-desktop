@@ -9,9 +9,9 @@ import { Container, Preloader } from '@/shared/ui';
 const EditAccount = lazy(() =>
   import('@/features').then((module) => ({ default: module.EditAccount })),
 );
-const DeleteAccount = lazy(() =>
-  import('@/features').then((module) => ({ default: module.DeleteAccount })),
-);
+// const DeleteAccount = lazy(() =>
+//   import('@/features').then((module) => ({ default: module.DeleteAccount })),
+// );
 const AccountHeader = lazy(() =>
   import('@/features').then((module) => ({ default: module.AccountHeader })),
 );
@@ -140,7 +140,7 @@ export function AccountDetails() {
             containerProps={{ mb: 5 }}
           />
         )}
-        <DeleteAccount data={account} />
+        {/* <DeleteAccount data={account} /> */}
       </Suspense>
     </Container>
   );

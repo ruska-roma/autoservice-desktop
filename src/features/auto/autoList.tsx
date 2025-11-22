@@ -15,7 +15,6 @@ import { useMemo, useState } from 'react';
 import type { AutoType, ExtClientType } from '@/entities';
 import {
   AUTO_FORM_SCHEMA,
-  deleteAuto,
   getAutoName,
   getAutoPlateNumber,
   getAutoVin,
@@ -117,23 +116,23 @@ export const AutoList = ({ data, handleRefreshData, containerProps }: IAutoListP
     setInvalidFields(new Set());
   };
 
-  const handleDelete = async () => {
-    if (!selectedAuto) {
-      return;
-    }
+  // const handleDelete = async () => {
+  //   if (!selectedAuto) {
+  //     return;
+  //   }
 
-    const result = await deleteAuto(selectedAuto.id_auto);
-    if (result) {
-      toaster.create({
-        type: 'success',
-        closable: true,
-        duration: 2000,
-        title: 'Запись авто успешно удалена',
-      });
-      setIsDialogOpen(false);
-      handleRefreshData();
-    }
-  };
+  //   const result = await deleteAuto(selectedAuto.id_auto);
+  //   if (result) {
+  //     toaster.create({
+  //       type: 'success',
+  //       closable: true,
+  //       duration: 2000,
+  //       title: 'Запись авто успешно удалена',
+  //     });
+  //     setIsDialogOpen(false);
+  //     handleRefreshData();
+  //   }
+  // };
 
   const isFormChanged = useMemo(() => {
     if (!formData || !initialData) {
@@ -289,10 +288,10 @@ export const AutoList = ({ data, handleRefreshData, containerProps }: IAutoListP
             </Grid>
           }
           footerLayout={
-            <Flex gap={5} justify="space-between" w="full">
-              <Button variant="subtle" colorPalette="red" onClick={handleDelete}>
+            <Flex gap={5} justify="flex-end" w="full">
+              {/* <Button variant="subtle" colorPalette="red" onClick={handleDelete}>
                 Удалить
-              </Button>
+              </Button> */}
               <Flex gap={3} align="center">
                 <Button
                   variant="outline"

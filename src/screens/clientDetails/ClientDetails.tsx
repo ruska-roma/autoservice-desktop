@@ -13,9 +13,9 @@ const ClientHeader = lazy(() =>
 const EditClient = lazy(() =>
   import('@/features').then((module) => ({ default: module.EditClient })),
 );
-const DeleteClient = lazy(() =>
-  import('@/features').then((module) => ({ default: module.DeleteClient })),
-);
+// const DeleteClient = lazy(() =>
+//   import('@/features').then((module) => ({ default: module.DeleteClient })),
+// );
 const AccountList = lazy(() =>
   import('@/features').then((module) => ({ default: module.AccountList })),
 );
@@ -102,7 +102,7 @@ export const ClientDetails = () => {
         />
         <AutoList data={client} handleRefreshData={refreshClientData} containerProps={{ mb: 5 }} />
         <AccountList data={client} containerProps={{ mb: 5 }} />
-        <DeleteClient data={client} />
+        {/* <DeleteClient data={client} /> */}
       </Suspense>
     </Container>
   );
